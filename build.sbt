@@ -13,9 +13,11 @@ lazy val microservice = Project("find-your-national-insurance-number", file(".")
   )
   .settings(resolvers += Resolver.jcenterRepo)
   .settings(CodeCoverageSettings.settings: _*)
+  .settings(PlayKeys.playDefaultPort := 14022)
 
 lazy val it = project
   .enablePlugins(PlayScala)
   .dependsOn(microservice % "test->test")
   .settings(DefaultBuildSettings.itSettings)
   .settings(libraryDependencies ++= AppDependencies.it)
+

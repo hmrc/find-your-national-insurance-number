@@ -1,3 +1,8 @@
+/*
+ * Copyright 2023 HM Revenue & Customs
+ *
+ */
+
 package uk.gov.hmrc.findyournationalinsurancenumber.config
 
 import javax.inject.{Inject, Singleton}
