@@ -4,6 +4,8 @@ import uk.gov.hmrc.DefaultBuildSettings
 ThisBuild / majorVersion := 0
 ThisBuild / scalaVersion := "2.13.12"
 
+lazy val appName: String = "find-your-national-insurance-number"
+
 lazy val microservice = Project("find-your-national-insurance-number", file("."))
   .enablePlugins(play.sbt.PlayScala, SbtDistributablesPlugin)
   .settings(
@@ -13,7 +15,9 @@ lazy val microservice = Project("find-your-national-insurance-number", file(".")
     scalacOptions += "-Wconf:src=routes/.*:s",
     RoutesKeys.routesImport ++= Seq(
       "models._"
-    )
+    ),
+    name := appName,
+    scalaVersion := "2.13.12"
   )
   .settings(resolvers += Resolver.jcenterRepo)
   .settings(CodeCoverageSettings.settings: _*)
