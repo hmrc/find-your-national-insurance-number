@@ -46,8 +46,10 @@ class NPSFMNController @Inject()(
       } yield httpResponse.status match {
         case 202 => Results.Accepted(httpResponse.body)
         case 400 => Results.BadRequest(httpResponse.body)
+        case 401 => Results.Unauthorized(httpResponse.body)
         case 404 => Results.NotFound(httpResponse.body)
         case 500 => Results.InternalServerError(httpResponse.body)
+        case 501 => Results.NotImplemented(httpResponse.body)
         // Add more cases as needed for other status codes
         case _ => Results.Status(httpResponse.status)(httpResponse.body)
       }
