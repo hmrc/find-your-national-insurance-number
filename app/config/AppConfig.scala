@@ -12,11 +12,12 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class AppConfig @Inject()(config: Configuration) {
 
-  lazy val hipProtocol: String = config.get[String]("microservice.services.nps-fmn-api.protocol")
-  lazy val hipHost: String = config.get[String]("microservice.services.nps-fmn-api.host")
-  lazy val hipPort: String = config.get[String]("microservice.services.nps-fmn-api.port")
+  lazy val npsFMNAPIProtocol: String = config.get[String]("microservice.services.nps-fmn-api.protocol")
+  lazy val npsFMNAPIHost: String = config.get[String]("microservice.services.nps-fmn-api.host")
+  lazy val npsFMNAPIPort: String = config.get[String]("microservice.services.nps-fmn-api.port")
+  lazy val npsFMNAPIOriginatorId: String = config.get[String]("external-url.nps-fmn-api.gov-uk-originator-id")
 
-  val npsFMNAPIUrl: String = s"$hipProtocol://$hipHost:$hipPort"
+  val npsFMNAPIUrl: String = s"$npsFMNAPIProtocol://$npsFMNAPIHost:$npsFMNAPIPort"
 
 
   lazy val individualDetailsProtocol: String = config.get[String]("external-url.individual-details.protocol")

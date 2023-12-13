@@ -1,3 +1,8 @@
+/*
+ * Copyright 2023 HM Revenue & Customs
+ *
+ */
+
 package uk.gov.hmrc.findyournationalinsurancenumber.controllers
 
 import org.scalatest.matchers.should.Matchers
