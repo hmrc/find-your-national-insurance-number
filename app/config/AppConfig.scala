@@ -6,7 +6,6 @@
 package config
 
 import play.api.Configuration
-import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import javax.inject.{Inject, Singleton}
 
@@ -22,15 +21,10 @@ class AppConfig @Inject()(config: Configuration) {
 
   lazy val individualDetailsProtocol: String = config.get[String]("external-url.individual-details.protocol")
   lazy val individualDetailsHost: String = config.get[String]("external-url.individual-details.host")
-  lazy val individualDetailsBaseUrl: String = config.get[String]("external-url.individual-details.base-url")
   lazy val individualDetailsPort: String = config.get[String]("external-url.individual-details.port")
-  val individualDetailsServiceUrl: String = s"$individualDetailsProtocol://$individualDetailsHost:$individualDetailsPort$individualDetailsBaseUrl"
-
+  val individualDetailsServiceUrl: String = s"$individualDetailsProtocol://$individualDetailsHost:$individualDetailsPort"
 
   def individualDetails: DesApiServiceConfig =
     DesApiServiceConfig(config.get[Configuration]("microservice.services.individual-details"))
-
-  def cacheSecretKey:String = config.get[String]("cache.secret-key")
-
 
 }
