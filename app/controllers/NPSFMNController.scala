@@ -34,7 +34,6 @@ class NPSFMNController @Inject()(
                                 ) extends BackendBaseController with FMNAuth with AuthorisedFunctions with I18nSupport with Logging {
 
   implicit val format: OFormat[NPSFMNRequest] = Json.format[NPSFMNRequest]
-  implicit val formatHttpResponse: OWrites[HttpResponse] = Json.writes[HttpResponse]
 
   def onPageLoad(nino: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
     authorisedAsFMNUser { authContext => {

@@ -4,5 +4,5 @@ GET     /hello-world             uk.gov.hmrc.findyournationalinsurancenumber.con
 
 POST    /nps-json-service/nps/itmp/find-my-nino/api/v1/individual/:nino controllers.NPSFMNController.onPageLoad(nino: String)
 
-GET     /individuals/details/NINO/:nino/:resolveMerge controllers.IndividualsDetailsController.getIndividualDetails(nino: String, resolveMerge: Boolean)
+GET     /individuals/details/NINO/:nino/:resolveMerge controllers.IndividualsDetailsController.getIndividualDetails(nino: String, resolveMerge: String)
 

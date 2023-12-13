@@ -5,84 +5,27 @@
 
 package connectors
 
-import cats.data.EitherT
-import cats.syntax.all._
-import com.google.inject.ImplementedBy
+import com.google.inject.{Inject, Singleton}
 import config.AppConfig
-import connectors.HttpReadsWrapper.Recovered
-import models.IndividualDetailsResponseEnvelope.IndividualDetailsResponseEnvelope
-import models.errors.{ConnectorError, IndividualDetailsError}
-import models.{CorrelationId, IndividualDetailsIdentifier}
-import models.individualdetails.{IndividualDetails, ResolveMerge}
-import models.upstreamfailure.{Failure, UpstreamFailures}
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import uk.gov.hmrc.play.bootstrap.metrics.Metrics
+import models.CorrelationId
+import play.api.Logging
+import uk.gov.hmrc.http.HttpReads.Implicits._
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse}
 
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
-
-@ImplementedBy(classOf[DefaultIndividualDetailsConnector])
-trait IndividualDetailsConnector {
-  def getIndividualDetails(identifier: IndividualDetailsIdentifier, resolveMerge: ResolveMerge
-                          )(implicit ec: ExecutionContext,
-                            hc: HeaderCarrier,
-                            correlationId: CorrelationId): IndividualDetailsResponseEnvelope[IndividualDetails]
-}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class DefaultIndividualDetailsConnector @Inject() (httpClient: HttpClient,
-    appConfig:  AppConfig, metrics: Metrics) extends IndividualDetailsConnector
-    with HttpReadsWrapper[UpstreamFailures, Failure]
-    with MetricsSupport {
+class IndividualDetailsConnector @Inject()(
+  val httpClient: HttpClient,
+  appConfig:  AppConfig) extends Logging {
 
-  def getIndividualDetails(identifier: IndividualDetailsIdentifier, resolveMerge: ResolveMerge
-                          )(implicit ec: ExecutionContext,hc: HeaderCarrier, correlationId: CorrelationId
-  ): IndividualDetailsResponseEnvelope[IndividualDetails] = {
-    val url = s"${appConfig.individualDetailsServiceUrl}/individuals/details/NINO/${identifier.value}/${resolveMerge.value}"
-    val connectorName     = "individual-details-connector"
-    val additionalLogInfo = Some(AdditionalLogInfo(Map("correlation-id" -> correlationId.value.toString)))
-    withHttpReads(
-      connectorName,
-      metrics.defaultRegistry,
-      additionalLogInfo
-    ) { implicit httpReads =>
-      EitherT(
-        httpClient
-          .GET(url)(httpReads, desApiHeaders(appConfig.individualDetails), ec)
-          .recovered(logger, connectorName, metrics.defaultRegistry, additionalLogInfo)
-      )
-    }
-  }
 
-  override def fromUpstreamErrorToIndividualDetailsError(
-      connectorName:     String,
-      status:            Int,
-      upstreamError:     UpstreamFailures,
-      additionalLogInfo: Option[AdditionalLogInfo]
-  ): ConnectorError = {
-    val additionalLogInformation = additionalLogInfo.map(ali => s"${ali.toString}, ").getOrElse("")
-    logger.debug(s"$additionalLogInformation$connectorName with status: $status, ${upstreamError.failures
-      .map(f => s"code: ${f.code}. reason: ${f.reason}")
-      .mkString(";")}")
+  def getIndividualDetails(identifier: String, resolveMerge: String
+                          )(implicit hc: HeaderCarrier, ec: ExecutionContext, correlationId: CorrelationId): Future[HttpResponse] = {
 
-    ConnectorError(
-      status,
-      s"$connectorName, ${upstreamError.failures.map(f => s"code: ${f.code}. reason: ${f.reason}").mkString(";")}"
-    )
-  }
+    val url = s"${appConfig.individualDetailsServiceUrl}/individuals/details/NINO/${identifier}/${resolveMerge}"
+    httpClient.GET[HttpResponse](url)(implicitly, desApiHeaders(appConfig.individualDetails), implicitly)
 
-  override def fromSingleUpstreamErrorToIndividualDetailsError(
-      connectorName:     String,
-      status:            Int,
-      upstreamError:     Failure,
-      additionalLogInfo: Option[AdditionalLogInfo]
-  ): Option[IndividualDetailsError] = {
-    val additionalLogInformation = additionalLogInfo.map(ali => s"${ali.toString}, ").getOrElse("")
-
-    logger.debug(
-      s"$additionalLogInformation$connectorName with status: $status, ${upstreamError.code} - ${upstreamError.reason}"
-    )
-    ConnectorError(status, s"$connectorName, ${upstreamError.code} - ${upstreamError.reason}").some
   }
 
 }
