@@ -33,8 +33,10 @@ class DefaultNPSFMNConnector@Inject() (httpClientV2: HttpClientV2, appConfig: Ap
   def updateDetails(nino: String, body: NPSFMNRequest
                    )(implicit hc: HeaderCarrier,correlationId: CorrelationId, ec: ExecutionContext): Future[HttpResponse] = {
     val url = s"${appConfig.npsFMNAPIUrl}/nps-json-service/nps/itmp/find-my-nino/api/v1/individual/$nino"
-    val headers = Seq("correlationId" -> correlationId.value.toString,
-      "gov-uk-originator-id" -> appConfig.npsFMNAPIOriginatorId)
+    val headers = Seq(
+      "correlationId" -> correlationId.value.toString,
+      "gov-uk-originator-id" -> appConfig.npsFMNAPIOriginatorId,
+      "Authorization" -> appConfig.npsFMNAPIToken)
     
     logger.info(s"[NPSFMNConnector][updateDetails] NPS FMN headers = ${headers}")
 
