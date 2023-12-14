@@ -35,13 +35,13 @@ class NPSFMNController @Inject()(
 
   implicit val format: OFormat[NPSFMNRequest] = Json.format[NPSFMNRequest]
 
-  def onPageLoad(nino: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
+  def sendLetter(nino: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
     authorisedAsFMNUser { authContext => {
 
       val passRequest = request.body.as[NPSFMNRequest]
 
       for {
-        httpResponse <- npsFMNService.updateDetails(nino, passRequest)
+        httpResponse <- npsFMNService.sendLetter(nino, passRequest)
       } yield httpResponse.status match {
         case 202 => Results.Accepted(httpResponse.body)
         case 400 => Results.BadRequest(httpResponse.body)
