@@ -23,7 +23,7 @@ import scala.concurrent.{ExecutionContext, Future}
 @ImplementedBy(classOf[DefaultNPSFMNConnector])
 trait NPSFMNConnector {
 
-  def updateDetails(nino: String, npsFMNRequest: NPSFMNRequest
+  def sendLetter(nino: String, npsFMNRequest: NPSFMNRequest
                    )(implicit hc: HeaderCarrier,correlationId: CorrelationId, ec: ExecutionContext): Future[HttpResponse]
 }
 
@@ -32,7 +32,7 @@ class DefaultNPSFMNConnector@Inject() (httpClientV2: HttpClientV2, appConfig: Ap
   extends  NPSFMNConnector
   with MetricsSupport with Logging {
 
-  def updateDetails(nino: String, body: NPSFMNRequest
+  def sendLetter(nino: String, body: NPSFMNRequest
                    )(implicit hc: HeaderCarrier,correlationId: CorrelationId, ec: ExecutionContext): Future[HttpResponse] = {
     val url = s"${appConfig.npsFMNAPIUrl}/nps-json-service/nps/itmp/find-my-nino/api/v1/individual/$nino"
 //    val headers = Seq(
@@ -49,7 +49,7 @@ class DefaultNPSFMNConnector@Inject() (httpClientV2: HttpClientV2, appConfig: Ap
       ("gov-uk-originator-id", "DA2_FMN")
     )
 
-    logger.info(s"[NPSFMNConnector][updateDetails] NPS FMN headers = ${headers}")
+    logger.info(s"[NPSFMNConnector][sendLetter] NPS FMN headers = ${headers}")
 
     val httpResponse = httpClientV2
       .post(new URL(url))
@@ -57,10 +57,9 @@ class DefaultNPSFMNConnector@Inject() (httpClientV2: HttpClientV2, appConfig: Ap
       .setHeader(headers:_*)
       .execute[HttpResponse]
       .flatMap{ response =>
+        logger.info(s"BE [NPSFMNConnector][sendLetter] NPS FMN response = ${response}")
         Future.successful(response)
       }
-
-    logger.info(s"[NPSFMNConnector][updateDetails] NPS FMN response = ${httpResponse}")
 
     httpResponse
   }
