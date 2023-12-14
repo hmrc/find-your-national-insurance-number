@@ -49,7 +49,7 @@ class DefaultNPSFMNConnector@Inject() (httpClientV2: HttpClientV2, appConfig: Ap
       ("gov-uk-originator-id", "DA2_FMN")
     )
 
-    logger.info(s"[NPSFMNConnector][updateDetails] NPS FMN headers = ${headers}")
+    logger.info(s"[NPSFMNConnector][sendLetter] NPS FMN headers = ${headers}")
 
     val httpResponse = httpClientV2
       .post(new URL(url))
@@ -57,7 +57,7 @@ class DefaultNPSFMNConnector@Inject() (httpClientV2: HttpClientV2, appConfig: Ap
       .setHeader(headers:_*)
       .execute[HttpResponse]
       .flatMap{ response =>
-        logger.info(s"BE [NPSFMNConnector][updateDetails] NPS FMN response = ${httpResponse}")
+        logger.info(s"BE [NPSFMNConnector][sendLetter] NPS FMN response = ${response}")
         Future.successful(response)
       }
 
