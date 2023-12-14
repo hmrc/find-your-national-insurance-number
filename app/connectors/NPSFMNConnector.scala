@@ -44,9 +44,9 @@ class DefaultNPSFMNConnector@Inject() (httpClientV2: HttpClientV2, appConfig: Ap
       (play.api.http.HeaderNames.CONTENT_TYPE, MimeTypes.JSON),
       (play.api.http.HeaderNames.ACCEPT, MimeTypes.JSON),
       (play.api.http.HeaderNames.AUTHORIZATION, s"Bearer ${appConfig.npsFMNAPIToken}"),
-      ("X-Correlation-ID" -> correlationId.value.toString),
+      ("correlationId" -> correlationId.value.toString),
       ("environment", "ist0"),
-      ("Gov-Uk-Originator-Id", appConfig.npsFMNAPIOriginatorId)
+      ("gov-uk-originator-id", "DA2_FMN")
     )
 
     logger.info(s"[NPSFMNConnector][updateDetails] NPS FMN headers = ${headers}")
