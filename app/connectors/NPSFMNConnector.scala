@@ -35,17 +35,11 @@ class DefaultNPSFMNConnector@Inject() (httpClientV2: HttpClientV2, appConfig: Ap
   def sendLetter(nino: String, body: NPSFMNRequest
                    )(implicit hc: HeaderCarrier,correlationId: CorrelationId, ec: ExecutionContext): Future[HttpResponse] = {
     val url = s"${appConfig.npsFMNAPIUrl}/nps/nps-json-service/nps/itmp/find-my-nino/api/v1/individual/$nino"
-//    val headers = Seq(
-//      "X-Correlation-ID" -> correlationId.value.toString,
-//      "gov-uk-originator-id" -> appConfig.npsFMNAPIOriginatorId,
-//      "Authorization" -> appConfig.npsFMNAPIToken)
 
     val headers = Seq(
       (play.api.http.HeaderNames.CONTENT_TYPE, MimeTypes.JSON),
-      (play.api.http.HeaderNames.ACCEPT, MimeTypes.JSON),
       (play.api.http.HeaderNames.AUTHORIZATION, s"Basic ${appConfig.npsFMNAPIToken}"),
       ("correlationId" -> correlationId.value.toString),
-      ("environment", "ist0"),
       ("gov-uk-originator-id", "DA2_FMN")
     )
 
