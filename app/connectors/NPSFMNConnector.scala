@@ -10,13 +10,12 @@ import config.AppConfig
 import models.CorrelationId
 import models.nps.NPSFMNRequest
 import play.api.http.MimeTypes
-import play.api.{Logger, Logging}
+import play.api.Logging
 import uk.gov.hmrc.http.HttpReads.Implicits._
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 
 import java.net.URL
-import java.time.Instant.now
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
