@@ -5,7 +5,6 @@
 
 package connectors
 
-import connectors.DefaultNPSFMNConnector
 import models._
 import models.nps.NPSFMNRequest
 import org.scalatestplus.mockito.MockitoSugar

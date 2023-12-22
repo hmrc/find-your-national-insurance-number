@@ -20,7 +20,6 @@ object Stubs {
       |}
       |""".stripMargin
 
-
   def userLoggedInFMNUser(testUserJson: String): StubMapping =
     stubFor(
       post(urlEqualTo("/auth/authorise"))
