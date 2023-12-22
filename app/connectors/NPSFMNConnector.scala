@@ -27,7 +27,7 @@ trait NPSFMNConnector {
 }
 
 @Singleton
-class DefaultNPSFMNConnector@Inject() (httpClientV2: HttpClientV2, appConfig: AppConfig)
+class DefaultNPSFMNConnector @Inject()(httpClientV2: HttpClientV2, appConfig: AppConfig)
   extends  NPSFMNConnector
   with MetricsSupport with Logging {
 
@@ -38,8 +38,8 @@ class DefaultNPSFMNConnector@Inject() (httpClientV2: HttpClientV2, appConfig: Ap
     val headers = Seq(
       (play.api.http.HeaderNames.CONTENT_TYPE, MimeTypes.JSON),
       (play.api.http.HeaderNames.AUTHORIZATION, s"Basic ${appConfig.npsFMNAPIToken}"),
-      ("correlationId" -> correlationId.value.toString),
-      ("gov-uk-originator-id", "DA2_FMN")
+      (appConfig.npsFMNAPICorrelationIdKey, correlationId.value.toString),
+      (appConfig.npsFMNAPIOriginatorIdKey, appConfig.npsFMNAPIOriginatorIdValue)
     )
 
     logger.info(s"[NPSFMNConnector][sendLetter] NPS FMN headers = ${headers}")

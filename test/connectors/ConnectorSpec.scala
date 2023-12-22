@@ -3,7 +3,7 @@
  *
  */
 
-package uk.gov.hmrc.findyournationalinsurancenumber.connectors
+package connectors
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock._
