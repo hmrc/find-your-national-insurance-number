@@ -23,7 +23,7 @@ trait NPSFMNService {
                    )(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse]
 }
 
-class NPSFMNServiceImpl @Inject()(connector: NPSFMNConnector, config: AppConfig)(implicit val ec: ExecutionContext)
+class NPSFMNServiceImpl @Inject()(connector: NPSFMNConnector)(implicit val ec: ExecutionContext)
   extends NPSFMNService with Logging {
 
   def sendLetter(nino: String, npsFMNRequest: NPSFMNRequest
