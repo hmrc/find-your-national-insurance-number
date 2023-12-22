@@ -12,6 +12,8 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class AppConfig @Inject()(config: Configuration) {
 
+  val appName: String = config.get[String]("appName")
+
   lazy val npsFMNAPICorrelationIdKey: String = config.get[String]("microservice.services.nps-fmn-api.correlationId.key")
   lazy val npsFMNAPIOriginatorIdKey: String = config.get[String]("microservice.services.nps-fmn-api.govUkOriginatorId.key")
   lazy val npsFMNAPIOriginatorIdValue: String = config.get[String]("microservice.services.nps-fmn-api.govUkOriginatorId.value")
@@ -21,7 +23,6 @@ class AppConfig @Inject()(config: Configuration) {
   lazy val npsFMNAPIPort: String = config.get[String]("microservice.services.nps-fmn-api.port")
   lazy val npsFMNAPIToken: String = config.get[String]("microservice.services.nps-fmn-api.token")
   val npsFMNAPIUrl: String = s"$npsFMNAPIProtocol://$npsFMNAPIHost:$npsFMNAPIPort"
-
 
   lazy val individualDetailsProtocol: String = config.get[String]("external-url.individual-details.protocol")
   lazy val individualDetailsHost: String = config.get[String]("external-url.individual-details.host")
