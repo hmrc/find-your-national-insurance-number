@@ -9,6 +9,7 @@ import auth.FMNAuth
 
 import javax.inject.{Inject, Singleton}
 import config.AppConfig
+import models.CorrelationId
 import models.nps.NPSFMNRequest
 import play.api.{Configuration, Environment, Logging}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -39,7 +40,7 @@ class NPSFMNController @Inject()(
     authorisedAsFMNUser { authContext => {
 
       val passRequest = request.body.as[NPSFMNRequest]
-
+      implicit val correlationId: CorrelationId = CorrelationId.random
       for {
         httpResponse <- npsFMNService.sendLetter(nino, passRequest)
       } yield httpResponse.status match {
