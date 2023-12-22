@@ -28,15 +28,7 @@ class NPSFMNServiceImpl @Inject()(connector: NPSFMNConnector, config: AppConfig)
 
   def sendLetter(nino: String, npsFMNRequest: NPSFMNRequest
                    )(implicit hc: HeaderCarrier, correlationId: CorrelationId, ec: ExecutionContext): Future[HttpResponse] = {
-
-    try {
       connector.sendLetter(nino, npsFMNRequest)
-    } catch {
-      case e: Exception =>
-        logger.error(s"[NPSFMNService][sendLetter] Exception = ${e.getMessage}")
-        throw e
-    }
-
   }
 
 }
