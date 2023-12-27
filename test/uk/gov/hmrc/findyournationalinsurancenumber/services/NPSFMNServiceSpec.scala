@@ -5,19 +5,17 @@
 
 package uk.gov.hmrc.findyournationalinsurancenumber.services
 
-import connectors.{DefaultNPSFMNConnector, NPSFMNConnector}
+import connectors.DefaultNPSFMNConnector
 import models.CorrelationId
 import models.nps.NPSFMNRequest
-import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{reset, when}
 import play.api.Application
 import play.api.http.Status.NO_CONTENT
-import services.{NPSFMNService, NPSFMNServiceImpl}
+import services.NPSFMNService
 import uk.gov.hmrc.findyournationalinsurancenumber.util.BaseSpec
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import play.api.inject.bind
 
-import java.util.UUID
 import scala.concurrent.{ExecutionContext, Future}
 
 class NPSFMNServiceSpec extends BaseSpec {
