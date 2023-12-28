@@ -146,5 +146,18 @@ class NPSFMNControllerSpec extends AnyWordSpec with Matchers with MockitoSugar w
       status(result) mustBe NOT_IMPLEMENTED
     }
 
+    "return the same status and body as the service response when the status code is not explicitly handled" in {
+      val npsFMNRequest = NPSFMNRequest("line1", "line2", "line3", "line4")
+      val httpResponse = uk.gov.hmrc.http.HttpResponse(418, "happy new year")
+
+      when(mockNPSFMNService.sendLetter(any(), NPSFMNRequest(any(),any(),any(),any())))
+        .thenReturn(Future.successful(httpResponse))
+
+      val result = controller.sendLetter(nino)(fakeRequestWithAuth.withBody(Json.toJson(npsFMNRequest)))
+
+      status(result) mustBe 418
+      contentAsString(result) mustBe "happy new year"
+    }
+
   }
 }
