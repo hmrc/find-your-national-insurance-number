@@ -20,16 +20,15 @@ import scala.concurrent.{ExecutionContext, Future}
 @ImplementedBy(classOf[NPSFMNServiceImpl])
 trait NPSFMNService {
   def sendLetter(nino: String, npsFMNRequest: NPSFMNRequest
-                   )(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse]
+                   )(implicit hc: HeaderCarrier, correlationId: CorrelationId, ec: ExecutionContext): Future[HttpResponse]
 }
 
 class NPSFMNServiceImpl @Inject()(connector: NPSFMNConnector, config: AppConfig)(implicit val ec: ExecutionContext)
   extends NPSFMNService with Logging {
 
   def sendLetter(nino: String, npsFMNRequest: NPSFMNRequest
-                   )(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
-    implicit val correlationId: CorrelationId = CorrelationId(UUID.randomUUID())
-    connector.sendLetter(nino, npsFMNRequest)
+                   )(implicit hc: HeaderCarrier, correlationId: CorrelationId, ec: ExecutionContext): Future[HttpResponse] = {
+      connector.sendLetter(nino, npsFMNRequest)
   }
 
 }

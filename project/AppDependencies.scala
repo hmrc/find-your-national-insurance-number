@@ -11,7 +11,8 @@ object AppDependencies {
   )
 
   val test = Seq(
-    "uk.gov.hmrc"        %% "bootstrap-test-play-30"           % bootstrapVersion            % Test
+    "uk.gov.hmrc"             %%  "bootstrap-test-play-30"      % bootstrapVersion            % Test,
+    "org.mockito"             %   "mockito-inline"              % "3.12.4"                    % Test
   )
 
   val it = Seq.empty
