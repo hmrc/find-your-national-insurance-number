@@ -19,7 +19,6 @@ class IndividualDetailsConnector @Inject()(
   val httpClient: HttpClient,
   appConfig:  AppConfig) extends Logging {
 
-
   def getIndividualDetails(identifier: String, resolveMerge: String
                           )(implicit hc: HeaderCarrier, ec: ExecutionContext, correlationId: CorrelationId): Future[HttpResponse] = {
 

@@ -3,18 +3,15 @@
  *
  */
 
-package uk.gov.hmrc.findyournationalinsurancenumber.connectors
+package connectors
 
 import config.AppConfig
-import connectors.IndividualDetailsConnector
 import models._
-import models.nps.NPSFMNRequest
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.Application
-import play.api.libs.json.Json
 import play.api.test.{DefaultAwaitTimeout, Injecting}
-import uk.gov.hmrc.findyournationalinsurancenumber.util.WireMockHelper
 import uk.gov.hmrc.http.HttpClient
+import util.WireMockHelper
 
 import java.util.UUID
 

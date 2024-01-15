@@ -1,7 +1,5 @@
 # microservice specific routes
 
-GET     /hello-world                                                        uk.gov.hmrc.findyournationalinsurancenumber.controllers.MicroserviceHelloWorldController.hello
-
 POST    /nps-json-service/nps/itmp/find-my-nino/api/v1/individual/:nino     controllers.NPSFMNController.sendLetter(nino: String)
 
 GET     /individuals/details/NINO/:nino/:resolveMerge                       controllers.IndividualsDetailsController.getIndividualDetails(nino: String, resolveMerge: String)
