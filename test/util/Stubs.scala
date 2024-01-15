@@ -3,7 +3,7 @@
  *
  */
 
-package uk.gov.hmrc.findyournationalinsurancenumber.util
+package util
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
@@ -19,7 +19,6 @@ object Stubs {
       |	"retrieve": ["nino", "credentialRole", "internalId", "confidenceLevel","affinityGroup", "allEnrolments", "optionalName" ]
       |}
       |""".stripMargin
-
 
   def userLoggedInFMNUser(testUserJson: String): StubMapping =
     stubFor(
