@@ -3,11 +3,10 @@
  *
  */
 
-package uk.gov.hmrc.findyournationalinsurancenumber.controllers
+package controllers
 
 import config.AppConfig
 import connectors.NPSFMNConnector
-import controllers.NPSFMNController
 import models.CorrelationId
 import models.nps.NPSFMNRequest
 import org.mockito.ArgumentMatchers.any
@@ -50,13 +49,13 @@ class NPSFMNControllerSpec extends AnyWordSpec with Matchers with MockitoSugar w
   private val mockNPSFMNService = new NPSFMNServiceImpl(mock[NPSFMNConnector], mock[AppConfig])
 
 
-  val retrievalResult: Future[Option[String] ~ Option[CredentialRole] ~ Option[String]] =
-    Future.successful(new~(new~(Some("nino"), Some(User)), Some("id")))
+  val retrievalResult: Future[Option[CredentialRole] ~ Option[String]] =
+    Future.successful(new ~(Some(User), Some("AA000003B")))
 
   when(
-    mockAuthConnector.authorise[Option[String] ~ Option[CredentialRole] ~ Option[String]](
+    mockAuthConnector.authorise[Option[CredentialRole] ~ Option[String]](
       any[Predicate],
-      any[Retrieval[Option[String] ~ Option[CredentialRole] ~ Option[String]]])(any[HeaderCarrier], any[ExecutionContext]))
+      any[Retrieval[Option[CredentialRole] ~ Option[String]]])(any[HeaderCarrier], any[ExecutionContext]))
     .thenReturn(retrievalResult)
 
   val modules: Seq[GuiceableModule] =

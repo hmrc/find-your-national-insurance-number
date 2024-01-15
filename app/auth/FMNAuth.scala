@@ -5,14 +5,13 @@
 
 package auth
 
-import models.FMNIdentifier.NationalInsuranceNumber
 import play.api.Logging
 import play.api.mvc.Results.Unauthorized
 import play.api.mvc._
 import uk.gov.hmrc.auth.core.AuthProvider.GovernmentGateway
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.{credentialRole, internalId, nino}
-import uk.gov.hmrc.auth.core.retrieve.~
-import uk.gov.hmrc.auth.core.{AuthProviders, AuthorisationException, AuthorisedFunctions, User}
+import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
+import uk.gov.hmrc.auth.core.{AuthProviders, AuthorisationException, AuthorisedFunctions, CredentialRole, User}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.config.AuthRedirects
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
@@ -20,17 +19,15 @@ import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import scala.concurrent.{ExecutionContext, Future}
 
 final case class AuthContext[A](
-                                 nino:       NationalInsuranceNumber,
                                  isUser:     Boolean,
                                  internalId: String,
                                  request:    Request[A]
                                )
 
-
 trait FMNAuth extends AuthorisedFunctions with AuthRedirects with Logging{
-  protected type FMNAction[A] = AuthContext[A] => Future[Result]
-  val AuthPredicate = AuthProviders(GovernmentGateway)
-  val FMNRetrievals = nino and credentialRole and internalId
+  private type FMNAction[A] = AuthContext[A] => Future[Result]
+  private val AuthPredicate = AuthProviders(GovernmentGateway)
+  val FMNRetrievals: Retrieval[Option[CredentialRole] ~ Option[String]] = credentialRole and internalId
 
   def authorisedAsFMNUser(body: FMNAction[Any])
   (implicit ec: ExecutionContext, hc: HeaderCarrier, request: Request[_]): Future[Result] = authorisedUser(body)
@@ -45,8 +42,8 @@ trait FMNAuth extends AuthorisedFunctions with AuthRedirects with Logging{
       override def parser: BodyParser[AnyContent] = cc.parsers.defaultBodyParser
 
       override def invokeBlock[A](request: Request[A], authContext: AuthContext[A] => Future[Result]): Future[Result] = {
-        implicit val req = request
-        implicit val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+        implicit val req: Request[A] = request
+        implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
         authorisedUser(authContext)
       }
@@ -58,8 +55,8 @@ trait FMNAuth extends AuthorisedFunctions with AuthRedirects with Logging{
                                )(implicit ec: ExecutionContext, hc: HeaderCarrier, request: Request[A]): Future[Result] = {
     authorised(AuthPredicate)
       .retrieve(FMNRetrievals) {
-        case Some(nino) ~ Some(User) ~ Some(internalId) =>
-          block(AuthContext(NationalInsuranceNumber(nino), isUser = true, internalId, request))
+        case Some(User) ~ Some(internalId) =>
+          block(AuthContext(isUser = true, internalId, request))
         case _ =>
           logger.warn("user was not authenticated with required credentials")
           Future successful Unauthorized

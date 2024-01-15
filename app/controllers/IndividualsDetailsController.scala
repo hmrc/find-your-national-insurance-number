@@ -6,7 +6,6 @@
 package controllers
 
 import auth.FMNAuth
-import config.AppConfig
 import connectors.IndividualDetailsConnector
 import models.CorrelationId
 import play.api.{Configuration, Environment, Logging}
@@ -28,13 +27,11 @@ class IndividualsDetailsController  @Inject()(
                                              )(implicit val config: Configuration,
                                                val env: Environment,
                                                ec: ExecutionContext,
-                                               appConfig: AppConfig
                                              ) extends BackendBaseController with FMNAuth with AuthorisedFunctions with I18nSupport with Logging {
 
   def getIndividualDetails(nino: String, resolveMerge: String): Action[AnyContent] = Action.async { implicit request =>
-    authorisedAsFMNUser { authContext => {
+    authorisedAsFMNUser { _ => {
       implicit val correlationId: CorrelationId = CorrelationId(UUID.randomUUID())
-
       for {
         httpResponse <- individualDetailsConnector.getIndividualDetails(nino, resolveMerge)
       } yield httpResponse.status match {

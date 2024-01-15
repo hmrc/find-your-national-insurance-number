@@ -3,11 +3,10 @@
  *
  */
 
-package uk.gov.hmrc.findyournationalinsurancenumber.controllers
+package controllers
 
 import config.{AppConfig, DesApiServiceConfig}
 import connectors.IndividualDetailsConnector
-import controllers.IndividualsDetailsController
 import models.CorrelationId
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -21,8 +20,8 @@ import play.api.Application
 import play.api.http.Status.OK
 import play.api.inject.bind
 import play.api.inject.guice.{GuiceApplicationBuilder, GuiceableModule}
-import play.api.test.Helpers._
 import play.api.test.FakeRequest
+import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
 import uk.gov.hmrc.auth.core.{AuthConnector, CredentialRole, User}
@@ -35,8 +34,8 @@ class IndividualsDetailsControllerSpec extends AnyWordSpec with Matchers with Mo
 import IndividualsDetailsControllerSpec._
 
   "getIndividualDetails" must {
-    "should return OK" in {
 
+    "should return OK" in {
 
       val result = controller.getIndividualDetails(nino, resolveMerge)(fakeRequestWithAuth)
 
@@ -110,9 +109,9 @@ import IndividualsDetailsControllerSpec._
         status(result) mustBe 503
       }
     }
+
   }
 }
-
 
 object IndividualsDetailsControllerSpec {
   implicit val hc: HeaderCarrier = HeaderCarrier()
@@ -141,13 +140,13 @@ object IndividualsDetailsControllerSpec {
     .thenReturn(Future.successful(HttpResponse(OK, "")))
   when(mockAppConfig.individualDetailsServiceUrl).thenReturn("test")
 
-  val retrievalResult: Future[Option[String] ~ Option[CredentialRole] ~ Option[String]] =
-    Future.successful(new~(new~(Some("nino"), Some(User)), Some("id")))
+  val retrievalResult: Future[Option[CredentialRole] ~ Option[String]] =
+    Future.successful(new~(Some(User), Some("id")))
 
   when(
-    mockAuthConnector.authorise[Option[String] ~ Option[CredentialRole] ~ Option[String]](
+    mockAuthConnector.authorise[Option[CredentialRole] ~ Option[String]](
       any[Predicate],
-      any[Retrieval[Option[String] ~ Option[CredentialRole] ~ Option[String]]])(any[HeaderCarrier], any[ExecutionContext]))
+      any[Retrieval[Option[CredentialRole] ~ Option[String]]])(any[HeaderCarrier], any[ExecutionContext]))
     .thenReturn(retrievalResult)
 
   val modules: Seq[GuiceableModule] =
