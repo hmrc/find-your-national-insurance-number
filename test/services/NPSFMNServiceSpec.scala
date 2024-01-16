@@ -3,7 +3,7 @@
  *
  */
 
-package uk.gov.hmrc.findyournationalinsurancenumber.services
+package services
 
 import connectors.DefaultNPSFMNConnector
 import models.CorrelationId
@@ -12,9 +12,9 @@ import org.mockito.Mockito.{reset, when}
 import play.api.Application
 import play.api.http.Status.NO_CONTENT
 import services.NPSFMNService
-import uk.gov.hmrc.findyournationalinsurancenumber.util.BaseSpec
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import play.api.inject.bind
+import util.BaseSpec
 
 import scala.concurrent.{ExecutionContext, Future}
 

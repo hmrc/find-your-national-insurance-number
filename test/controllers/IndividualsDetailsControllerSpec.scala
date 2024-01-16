@@ -3,7 +3,7 @@
  *
  */
 
-package uk.gov.hmrc.findyournationalinsurancenumber.controllers
+package controllers
 
 import config.{AppConfig, DesApiServiceConfig}
 import connectors.IndividualDetailsConnector
