@@ -28,8 +28,7 @@ trait NPSFMNConnector {
 
 @Singleton
 class DefaultNPSFMNConnector @Inject()(httpClientV2: HttpClientV2, appConfig: AppConfig)
-  extends  NPSFMNConnector
-  with MetricsSupport with Logging {
+  extends  NPSFMNConnector with Logging {
 
   def sendLetter(nino: String, body: NPSFMNRequest
                    )(implicit hc: HeaderCarrier,correlationId: CorrelationId, ec: ExecutionContext): Future[HttpResponse] = {

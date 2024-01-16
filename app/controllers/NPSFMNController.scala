@@ -13,14 +13,13 @@ import models.CorrelationId
 import models.nps.NPSFMNRequest
 import play.api.{Configuration, Environment, Logging}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.{JsValue, Json, OFormat, OWrites}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result, Results}
+import play.api.libs.json.{JsValue, Json, OFormat}
+import play.api.mvc.{Action, MessagesControllerComponents, Results}
 import services.NPSFMNService
 import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisedFunctions}
-import uk.gov.hmrc.http.HttpResponse
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendBaseController
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 @Singleton()
 class NPSFMNController @Inject()(
