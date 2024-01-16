@@ -19,12 +19,10 @@ class IndividualDetailsConnector @Inject()(
   val httpClient: HttpClient,
   appConfig:  AppConfig) extends Logging {
 
-  def getIndividualDetails(identifier: String, resolveMerge: String
+  def getIndividualDetails(nino: String, resolveMerge: String
                           )(implicit hc: HeaderCarrier, ec: ExecutionContext, correlationId: CorrelationId): Future[HttpResponse] = {
-
-    val url = s"${appConfig.individualDetailsServiceUrl}/individuals/details/NINO/${identifier}/${resolveMerge}"
+    val url = s"${appConfig.individualDetailsServiceUrl}/individuals/details/NINO/${nino.take(8)}?resolveMerge=$resolveMerge"
     httpClient.GET[HttpResponse](url)(implicitly, desApiHeaders(appConfig.individualDetails), implicitly)
-
   }
 
 }

@@ -33,7 +33,7 @@ class IndividualsDetailsConnectorSpec
   val jsonInternalServerError = s"""
                 |{
                 |  "jsonServiceError": {
-                |    "requestURL": "/individuals/details/NINO/$nino/$resolveMerge",
+                |    "requestURL": "/individuals/details/NINO/$nino?resolveMerge=$resolveMerge",
                 |    "message": "GENERIC_SERVER_ERROR",
                 |    "appStatusMessageCount": 1,
                 |    "appStatusMessageList": {
@@ -48,7 +48,7 @@ class IndividualsDetailsConnectorSpec
   val jsonResourceNotFound =  s"""
                 |{
                 |  "jsonServiceError": {
-                |    "requestURL": "/individuals/details/NINO/$nino/$resolveMerge",
+                |    "requestURL": "/individuals/details/NINO/$nino?resolveMerge=$resolveMerge",
                 |    "message": "RESOURCE_NOT_FOUND",
                 |    "appStatusMessageCount": 1,
                 |    "appStatusMessageList": {
@@ -63,7 +63,7 @@ class IndividualsDetailsConnectorSpec
   val jsonNotFound = s"""
                 |{
                 |  "jsonServiceError": {
-                |    "requestURL": "/individuals/details/NINO/$nino/$resolveMerge",
+                |    "requestURL": "/individuals/details/NINO/$nino?resolveMerge=$resolveMerge",
                 |    "message": "BAD_REQUEST",
                 |    "appStatusMessageCount": 1,
                 |    "appStatusMessageList": {
@@ -90,7 +90,7 @@ class IndividualsDetailsConnectorSpec
   "Individuals details Connector" must {
 
     trait LocalSetup extends SpecSetup {
-      def url(nino: String) = s"/individuals/details/NINO/$nino/$resolveMerge"
+      def url(nino: String) = s"/individuals/details/NINO/$nino?resolveMerge=$resolveMerge"
     }
 
     "return Ok (200) when called with an invalid nino" in new LocalSetup {
