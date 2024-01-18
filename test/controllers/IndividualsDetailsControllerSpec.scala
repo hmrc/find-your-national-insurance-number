@@ -36,7 +36,6 @@ import IndividualsDetailsControllerSpec._
   "getIndividualDetails" must {
 
     "should return OK" in {
-
       val result = controller.getIndividualDetails(nino, resolveMerge)(fakeRequestWithAuth)
 
       whenReady(result) { _ =>
@@ -112,6 +111,7 @@ import IndividualsDetailsControllerSpec._
 
   }
 }
+
 
 object IndividualsDetailsControllerSpec {
   implicit val hc: HeaderCarrier = HeaderCarrier()
