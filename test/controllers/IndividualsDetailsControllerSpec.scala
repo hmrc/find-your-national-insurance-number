@@ -35,7 +35,7 @@ import IndividualsDetailsControllerSpec._
 
   "getIndividualDetails" must {
 
-    "should return OK" in {
+    "return OK" in {
       val result = controller.getIndividualDetails(nino, resolveMerge)(fakeRequestWithAuth)
 
       whenReady(result) { _ =>
@@ -43,69 +43,69 @@ import IndividualsDetailsControllerSpec._
       }
     }
 
-    "should return InternalServerError when failure occurs" in {
+    "return InternalServerError when failure occurs" in {
       when(mockIndividualDetailsConnector.httpClient.GET[HttpResponse](any(), any(), any())(any(), any(), any()))
         .thenReturn(Future.successful(HttpResponse(INTERNAL_SERVER_ERROR, "" )))
 
       val result = controller.getIndividualDetails(nino, resolveMerge)(fakeRequestWithAuth)
 
       whenReady(result) { _ =>
-        status(result) mustBe 500
+        status(result) mustBe INTERNAL_SERVER_ERROR
       }
     }
 
-    "should return BadRequest when failure occurs" in {
+    "return BadRequest when failure occurs" in {
       when(mockIndividualDetailsConnector.httpClient.GET[HttpResponse](any(), any(), any())(any(), any(), any()))
         .thenReturn(Future.successful(HttpResponse(BAD_REQUEST, "" )))
 
       val result = controller.getIndividualDetails(nino, resolveMerge)(fakeRequestWithAuth)
 
       whenReady(result) { _ =>
-        status(result) mustBe 400
+        status(result) mustBe BAD_REQUEST
       }
     }
 
-    "should return Unauthorized when failure occurs" in {
+    "return Unauthorized when failure occurs" in {
       when(mockIndividualDetailsConnector.httpClient.GET[HttpResponse](any(), any(), any())(any(), any(), any()))
         .thenReturn(Future.successful(HttpResponse(UNAUTHORIZED, "" )))
 
       val result = controller.getIndividualDetails(nino, resolveMerge)(fakeRequestWithAuth)
 
       whenReady(result) { _ =>
-        status(result) mustBe 401
+        status(result) mustBe UNAUTHORIZED
       }
     }
 
-    "should return NotFound when failure occurs" in {
+    "return NotFound when failure occurs" in {
       when(mockIndividualDetailsConnector.httpClient.GET[HttpResponse](any(), any(), any())(any(), any(), any()))
         .thenReturn(Future.successful(HttpResponse(NOT_FOUND, "" )))
 
       val result = controller.getIndividualDetails(nino, resolveMerge)(fakeRequestWithAuth)
 
       whenReady(result) { _ =>
-        status(result) mustBe 404
+        status(result) mustBe NOT_FOUND
       }
     }
 
-    "should return NotImplemented when failure occurs" in {
+    "return NotImplemented when failure occurs" in {
       when(mockIndividualDetailsConnector.httpClient.GET[HttpResponse](any(), any(), any())(any(), any(), any()))
         .thenReturn(Future.successful(HttpResponse(NOT_IMPLEMENTED, "" )))
 
       val result = controller.getIndividualDetails(nino, resolveMerge)(fakeRequestWithAuth)
 
       whenReady(result) { _ =>
-        status(result) mustBe 501
+        status(result) mustBe NOT_IMPLEMENTED
       }
     }
 
-    "should return ServiceUnavailable when failure occurs" in {
+    "return ServiceUnavailable when failure occurs" in {
       when(mockIndividualDetailsConnector.httpClient.GET[HttpResponse](any(), any(), any())(any(), any(), any()))
         .thenReturn(Future.successful(HttpResponse(SERVICE_UNAVAILABLE, "" )))
 
       val result = controller.getIndividualDetails(nino, resolveMerge)(fakeRequestWithAuth)
 
       whenReady(result) { _ =>
-        status(result) mustBe 503
+        status(result) mustBe SERVICE_UNAVAILABLE
       }
     }
 
