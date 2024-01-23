@@ -8,7 +8,6 @@ package controllers
 import auth.FMNAuth
 
 import javax.inject.{Inject, Singleton}
-import config.AppConfig
 import models.CorrelationId
 import models.nps.NPSFMNRequest
 import play.api.{Configuration, Environment, Logging}
@@ -29,14 +28,13 @@ class NPSFMNController @Inject()(
                                   npsFMNService: NPSFMNService
                                 )(implicit val config: Configuration,
                                   val env: Environment,
-                                  ec: ExecutionContext,
-                                  appConfig: AppConfig
+                                  ec: ExecutionContext
                                 ) extends BackendBaseController with FMNAuth with AuthorisedFunctions with I18nSupport with Logging {
 
   implicit val format: OFormat[NPSFMNRequest] = Json.format[NPSFMNRequest]
 
   def sendLetter(nino: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
-    authorisedAsFMNUser { authContext => {
+    authorisedAsFMNUser { _ => {
 
       val passRequest = request.body.as[NPSFMNRequest]
       implicit val correlationId: CorrelationId = CorrelationId.random

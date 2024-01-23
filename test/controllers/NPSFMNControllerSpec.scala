@@ -7,7 +7,6 @@ package controllers
 
 import config.AppConfig
 import connectors.NPSFMNConnector
-import controllers.NPSFMNController
 import models.CorrelationId
 import models.nps.NPSFMNRequest
 import org.mockito.ArgumentMatchers.any
@@ -50,13 +49,13 @@ class NPSFMNControllerSpec extends AnyWordSpec with Matchers with MockitoSugar w
   private val mockNPSFMNService = new NPSFMNServiceImpl(mock[NPSFMNConnector], mock[AppConfig])
 
 
-  val retrievalResult: Future[Option[String] ~ Option[CredentialRole] ~ Option[String]] =
-    Future.successful(new~(new~(Some("nino"), Some(User)), Some("id")))
+  val retrievalResult: Future[Option[CredentialRole] ~ Option[String]] =
+    Future.successful(new ~(Some(User), Some("AA000003B")))
 
   when(
-    mockAuthConnector.authorise[Option[String] ~ Option[CredentialRole] ~ Option[String]](
+    mockAuthConnector.authorise[Option[CredentialRole] ~ Option[String]](
       any[Predicate],
-      any[Retrieval[Option[String] ~ Option[CredentialRole] ~ Option[String]]])(any[HeaderCarrier], any[ExecutionContext]))
+      any[Retrieval[Option[CredentialRole] ~ Option[String]]])(any[HeaderCarrier], any[ExecutionContext]))
     .thenReturn(retrievalResult)
 
   val modules: Seq[GuiceableModule] =
@@ -73,10 +72,10 @@ class NPSFMNControllerSpec extends AnyWordSpec with Matchers with MockitoSugar w
 
   private val controller = application.injector.instanceOf[NPSFMNController]
 
-  "sendLetter" should {
+  "sendLetter" must {
     "return 202 Accepted when the service returns a 202 response" in {
       val npsFMNRequest = NPSFMNRequest("line1", "line2", "line3", "line4")
-      val httpResponse = uk.gov.hmrc.http.HttpResponse(202, "Accepted")
+      val httpResponse = uk.gov.hmrc.http.HttpResponse(ACCEPTED, "Accepted")
 
       when(mockNPSFMNService.sendLetter(any(), NPSFMNRequest(any(),any(),any(),any())))
         .thenReturn(Future.successful(httpResponse))
@@ -88,7 +87,7 @@ class NPSFMNControllerSpec extends AnyWordSpec with Matchers with MockitoSugar w
 
     "return 400 BadRequest when the service returns a 400 response" in {
       val npsFMNRequest = NPSFMNRequest("line1", "line2", "line3", "line4")
-      val httpResponse = uk.gov.hmrc.http.HttpResponse(400, "Bad Request")
+      val httpResponse = uk.gov.hmrc.http.HttpResponse(BAD_REQUEST, "Bad Request")
 
       when(mockNPSFMNService.sendLetter(any(), NPSFMNRequest(any(),any(),any(),any())))
         .thenReturn(Future.successful(httpResponse))
@@ -100,7 +99,7 @@ class NPSFMNControllerSpec extends AnyWordSpec with Matchers with MockitoSugar w
 
     "return 401 Unauthorized when the service returns a 401 response" in {
       val npsFMNRequest = NPSFMNRequest("line1", "line2", "line3", "line4")
-      val httpResponse = uk.gov.hmrc.http.HttpResponse(401, "Unauthorized")
+      val httpResponse = uk.gov.hmrc.http.HttpResponse(UNAUTHORIZED, "Unauthorized")
 
       when(mockNPSFMNService.sendLetter(any(), NPSFMNRequest(any(),any(),any(),any())))
         .thenReturn(Future.successful(httpResponse))
@@ -112,7 +111,7 @@ class NPSFMNControllerSpec extends AnyWordSpec with Matchers with MockitoSugar w
 
     "return 404 NotFound when the service returns a 404 response" in {
       val npsFMNRequest = NPSFMNRequest("line1", "line2", "line3", "line4")
-      val httpResponse = uk.gov.hmrc.http.HttpResponse(404, "Not Found")
+      val httpResponse = uk.gov.hmrc.http.HttpResponse(NOT_FOUND, "Not Found")
 
       when(mockNPSFMNService.sendLetter(any(), NPSFMNRequest(any(),any(),any(),any())))
         .thenReturn(Future.successful(httpResponse))
@@ -124,7 +123,7 @@ class NPSFMNControllerSpec extends AnyWordSpec with Matchers with MockitoSugar w
 
     "return 500 InternalServerError when the service returns a 500 response" in {
       val npsFMNRequest = NPSFMNRequest("line1", "line2", "line3", "line4")
-      val httpResponse = uk.gov.hmrc.http.HttpResponse(500, "Internal Server Error")
+      val httpResponse = uk.gov.hmrc.http.HttpResponse(INTERNAL_SERVER_ERROR, "Internal Server Error")
 
       when(mockNPSFMNService.sendLetter(any(), NPSFMNRequest(any(),any(),any(),any())))
         .thenReturn(Future.successful(httpResponse))
@@ -136,7 +135,7 @@ class NPSFMNControllerSpec extends AnyWordSpec with Matchers with MockitoSugar w
 
     "return 501 NotImplemented when the service returns a 501 response" in {
       val npsFMNRequest = NPSFMNRequest("line1", "line2", "line3", "line4")
-      val httpResponse = uk.gov.hmrc.http.HttpResponse(501, "Not Implemented")
+      val httpResponse = uk.gov.hmrc.http.HttpResponse(NOT_IMPLEMENTED, "Not Implemented")
 
       when(mockNPSFMNService.sendLetter(any(), NPSFMNRequest(any(),any(),any(),any())))
         .thenReturn(Future.successful(httpResponse))
@@ -148,14 +147,14 @@ class NPSFMNControllerSpec extends AnyWordSpec with Matchers with MockitoSugar w
 
     "return the same status and body as the service response when the status code is not explicitly handled" in {
       val npsFMNRequest = NPSFMNRequest("line1", "line2", "line3", "line4")
-      val httpResponse = uk.gov.hmrc.http.HttpResponse(418, "happy new year")
+      val httpResponse = uk.gov.hmrc.http.HttpResponse(IM_A_TEAPOT, "happy new year")
 
       when(mockNPSFMNService.sendLetter(any(), NPSFMNRequest(any(),any(),any(),any())))
         .thenReturn(Future.successful(httpResponse))
 
       val result = controller.sendLetter(nino)(fakeRequestWithAuth.withBody(Json.toJson(npsFMNRequest)))
 
-      status(result) mustBe 418
+      status(result) mustBe IM_A_TEAPOT
       contentAsString(result) mustBe "happy new year"
     }
 

@@ -35,8 +35,6 @@ class NPSFMNServiceSpec extends BaseSpec {
   override def beforeEach(): Unit =
     reset(mockNPSFMNConnector)
 
-
-
   "sendLetter" must {
     "return 204 response when letter is sent successfully" in {
 
