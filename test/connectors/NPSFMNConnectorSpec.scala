@@ -103,7 +103,7 @@ class NPSFMNConnectorSpec
       result.body mustBe ""
     }
 
-    "return NOT_FOUND (400) when called with an invalid nino" in new LocalSetup {
+    "return NOT_FOUND (404) when called with an invalid nino" in new LocalSetup {
       implicit val correlationId = CorrelationId(UUID.randomUUID())
       val body = mock[NPSFMNRequest]
       stubPost(url(nino), NOT_FOUND, Some(Json.toJson(body).toString()), Some(jsonNotFound))
@@ -112,7 +112,7 @@ class NPSFMNConnectorSpec
       result.body mustBe jsonNotFound
     }
 
-    "return RESOURCE_NOT_FOUND (400) when called with an invalid nino" in new LocalSetup {
+    "return RESOURCE_NOT_FOUND (404) when called with an invalid nino" in new LocalSetup {
       implicit val correlationId = CorrelationId(UUID.randomUUID())
       val body = mock[NPSFMNRequest]
       stubPost(url(nino), NOT_FOUND, Some(Json.toJson(body).toString()), Some(jsonResourceNotFound))

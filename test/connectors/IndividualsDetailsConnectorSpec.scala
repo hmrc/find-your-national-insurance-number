@@ -101,7 +101,7 @@ class IndividualsDetailsConnectorSpec
       result.body mustBe ""
     }
 
-    "return NOT_FOUND (400) when called with an invalid nino" in new LocalSetup {
+    "return NOT_FOUND (404) when called with an invalid nino" in new LocalSetup {
       implicit val correlationId = CorrelationId(UUID.randomUUID())
       stubGet(url(nino), NOT_FOUND, Some(jsonNotFound))
       val result = connector.getIndividualDetails(nino, resolveMerge).futureValue.leftSideValue
@@ -109,7 +109,7 @@ class IndividualsDetailsConnectorSpec
       result.body mustBe jsonNotFound
     }
 
-    "return RESOURCE_NOT_FOUND (400) when called with an invalid nino" in new LocalSetup {
+    "return RESOURCE_NOT_FOUND (404) when called with an invalid nino" in new LocalSetup {
       implicit val correlationId = CorrelationId(UUID.randomUUID())
       stubGet(url(nino), NOT_FOUND, Some(jsonResourceNotFound))
       val result = connector.getIndividualDetails(nino, resolveMerge).futureValue.leftSideValue
