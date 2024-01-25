@@ -35,7 +35,7 @@ import IndividualsDetailsControllerSpec._
 
   "getIndividualDetails" must {
 
-    "return OK" in {
+    "return OK(200)" in {
       val result = controller.getIndividualDetails(nino, resolveMerge)(fakeRequestWithAuth)
 
       whenReady(result) { _ =>
@@ -43,7 +43,7 @@ import IndividualsDetailsControllerSpec._
       }
     }
 
-    "return InternalServerError when failure occurs" in {
+    "return InternalServerError(500) when failure occurs" in {
       when(mockIndividualDetailsConnector.httpClient.GET[HttpResponse](any(), any(), any())(any(), any(), any()))
         .thenReturn(Future.successful(HttpResponse(INTERNAL_SERVER_ERROR, "" )))
 
@@ -54,7 +54,7 @@ import IndividualsDetailsControllerSpec._
       }
     }
 
-    "return BadRequest when failure occurs" in {
+    "return BadRequest(400) when failure occurs" in {
       when(mockIndividualDetailsConnector.httpClient.GET[HttpResponse](any(), any(), any())(any(), any(), any()))
         .thenReturn(Future.successful(HttpResponse(BAD_REQUEST, "" )))
 
@@ -65,7 +65,7 @@ import IndividualsDetailsControllerSpec._
       }
     }
 
-    "return Unauthorized when failure occurs" in {
+    "return Unauthorized(401) when failure occurs" in {
       when(mockIndividualDetailsConnector.httpClient.GET[HttpResponse](any(), any(), any())(any(), any(), any()))
         .thenReturn(Future.successful(HttpResponse(UNAUTHORIZED, "" )))
 
@@ -76,7 +76,7 @@ import IndividualsDetailsControllerSpec._
       }
     }
 
-    "return NotFound when failure occurs" in {
+    "return NotFound(404) when failure occurs" in {
       when(mockIndividualDetailsConnector.httpClient.GET[HttpResponse](any(), any(), any())(any(), any(), any()))
         .thenReturn(Future.successful(HttpResponse(NOT_FOUND, "" )))
 
@@ -87,7 +87,7 @@ import IndividualsDetailsControllerSpec._
       }
     }
 
-    "return NotImplemented when failure occurs" in {
+    "return NotImplemented(501) when failure occurs" in {
       when(mockIndividualDetailsConnector.httpClient.GET[HttpResponse](any(), any(), any())(any(), any(), any()))
         .thenReturn(Future.successful(HttpResponse(NOT_IMPLEMENTED, "" )))
 
@@ -98,7 +98,7 @@ import IndividualsDetailsControllerSpec._
       }
     }
 
-    "return ServiceUnavailable when failure occurs" in {
+    "return ServiceUnavailable(503) when failure occurs" in {
       when(mockIndividualDetailsConnector.httpClient.GET[HttpResponse](any(), any(), any())(any(), any(), any()))
         .thenReturn(Future.successful(HttpResponse(SERVICE_UNAVAILABLE, "" )))
 
