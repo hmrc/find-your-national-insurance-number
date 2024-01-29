@@ -41,15 +41,12 @@ class DefaultNPSFMNConnector @Inject()(httpClientV2: HttpClientV2, appConfig: Ap
       (appConfig.npsFMNAPIOriginatorIdKey, appConfig.npsFMNAPIOriginatorIdValue)
     )
 
-    logger.info(s"[NPSFMNConnector][sendLetter] NPS FMN headers = ${headers}")
-
     val httpResponse = httpClientV2
       .post(new URL(url))
       .withBody(body)
       .setHeader(headers:_*)
       .execute[HttpResponse]
       .flatMap{ response =>
-        logger.info(s"BE [NPSFMNConnector][sendLetter] NPS FMN response = ${response}")
         Future.successful(response)
       }
 
