@@ -58,17 +58,12 @@ trait FMNAuth extends AuthorisedFunctions with AuthRedirects with Logging{
         case Some(User) ~ Some(internalId) =>
           block(AuthContext(isUser = true, internalId, request))
         case _ =>
-          logger.warn("user was not authenticated with required credentials")
           Future successful Unauthorized
       }
       .recover {
         case ex: AuthorisationException =>
-          logger.warn("could not authenticate user.")
-          logger.debug("could not authenticate user.", ex)
           Unauthorized
         case ex =>
-          logger.warn("user was not authenticated.")
-          logger.debug("user was not authenticated.", ex)
           Unauthorized
       }
   }
