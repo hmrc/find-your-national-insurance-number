@@ -27,7 +27,7 @@ class IndividualsDetailsController  @Inject()(
                                              )(implicit val config: Configuration,
                                                val env: Environment,
                                                ec: ExecutionContext,
-                                             ) extends BackendBaseController with FMNAuth with AuthorisedFunctions with I18nSupport with Logging {
+                                             ) extends BackendBaseController with FMNAuth with I18nSupport with Logging {
 
   def getIndividualDetails(nino: String, resolveMerge: String): Action[AnyContent] = Action.async { implicit request =>
     authorisedAsFMNUser { _ => {

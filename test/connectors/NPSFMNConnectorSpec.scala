@@ -13,12 +13,12 @@ import play.api.libs.json.Json
 import play.api.test.{DefaultAwaitTimeout, Injecting}
 import config.AppConfig
 import uk.gov.hmrc.http.client.HttpClientV2
-import util.WireMockHelper
+import util.{WiremockStub, WireMockHelper}
 
 import java.util.UUID
 
 class NPSFMNConnectorSpec
-  extends ConnectorSpec
+  extends WiremockStub
     with WireMockHelper
     with MockitoSugar
     with DefaultAwaitTimeout

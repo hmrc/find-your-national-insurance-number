@@ -11,12 +11,12 @@ import org.scalatestplus.mockito.MockitoSugar
 import play.api.Application
 import play.api.test.{DefaultAwaitTimeout, Injecting}
 import uk.gov.hmrc.http.HttpClient
-import util.WireMockHelper
+import util.{WiremockStub, WireMockHelper}
 
 import java.util.UUID
 
 class IndividualsDetailsConnectorSpec
-  extends ConnectorSpec
+  extends WiremockStub
     with WireMockHelper
     with MockitoSugar
     with DefaultAwaitTimeout
