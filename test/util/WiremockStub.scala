@@ -96,7 +96,7 @@ trait WiremockStub
       )
     )
 
-  def stubIndividualsDetails(nino :String, resolveMerge: String) = {
+  def stubIndividualsDetails(nino: String, resolveMerge: String) = {
     val portion: Int = 8
     val ninoWithoutSuffix = nino.take(portion)
     server.stubFor(get(urlMatching(s"/individuals/details/NINO/$ninoWithoutSuffix\\?resolveMerge=$resolveMerge"))
@@ -189,6 +189,33 @@ trait WiremockStub
                |      }
                |    ]
                |  }
+               |}""".stripMargin
+          )
+      )
+    )
+  }
+
+  def stubIndividualsDetailsFailure(nino: String, resolveMerge: String) = {
+    val portion: Int = 8
+    val ninoWithoutSuffix = nino.take(portion)
+    server.stubFor(get(urlMatching(s"/individuals/details/NINO/$ninoWithoutSuffix\\?resolveMerge=$resolveMerge"))
+      .willReturn(
+        aResponse()
+          .withStatus(NOT_FOUND)
+          .withBody(
+            s"""{}""".stripMargin
+          )
+      )
+    )
+  }
+
+  def stubNPS(nino: String, response: Int) = {
+    server.stubFor(post(urlMatching(s"/nps/nps-json-service/nps/itmp/find-my-nino/api/v1/individual/$nino"))
+      .willReturn(
+        aResponse()
+          .withStatus(response)
+          .withBody(
+            s"""{
                |}""".stripMargin
           )
       )

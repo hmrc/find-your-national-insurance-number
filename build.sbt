@@ -41,4 +41,4 @@ lazy val it = project
   .settings(DefaultBuildSettings.itSettings)
   .settings(libraryDependencies ++= AppDependencies.it)
 
-addCommandAlias("report", ";clean; coverage; test; coverageReport")
+addCommandAlias("report", ";clean; coverage; test; it/test; coverageReport")

@@ -36,6 +36,13 @@ trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach {
       "external-url.individual-details.host" -> wireHost,
       "external-url.individual-details.port" -> wirePort,
       "auditing.enabled"                     -> false,
-      "metrics.enabled"                      -> false
+      "metrics.enabled"                      -> false,
+      "microservice.services.nps-fmn-api.correlationId.key" -> "test",
+      "microservice.services.nps-fmn-api.govUkOriginatorId.key" -> "test",
+      "microservice.services.nps-fmn-api.govUkOriginatorId.value" -> "test",
+      "microservice.services.nps-fmn-api.protocol" -> "http",
+      "microservice.services.nps-fmn-api.host" -> wireHost,
+      "microservice.services.nps-fmn-api.port" -> wirePort,
+      "microservice.services.nps-fmn-api.token" -> "test"
     )
 }

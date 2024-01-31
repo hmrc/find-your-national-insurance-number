@@ -158,5 +158,20 @@ class IndividualsDetailsControllerIntegrationSpec
           |}
           |""".stripMargin)
     }
+
+    "respond with 404 status" in {
+      stubIndividualsDetailsFailure(nino, resolveMerge)
+
+      when(mockAuthConnector.authorise[Option[CredentialRole] ~ Option[String]](
+        any[Predicate],
+        any[Retrieval[Option[CredentialRole] ~ Option[String]]])(any[HeaderCarrier], any[ExecutionContext]))
+        .thenReturn(fakeRetrievalResult)
+
+      val response = await(wsClient.url(url).get())
+      response.status mustBe NOT_FOUND
+
+      response.json mustBe Json.parse(
+        """{}""".stripMargin)
+    }
   }
 }
