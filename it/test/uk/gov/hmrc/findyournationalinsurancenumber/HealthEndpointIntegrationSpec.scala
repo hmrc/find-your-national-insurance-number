@@ -1,3 +1,8 @@
+/*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ */
+
 package uk.gov.hmrc.findyournationalinsurancenumber
 
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
