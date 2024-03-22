@@ -1,19 +1,22 @@
-import sbt._
+import sbt.*
 
 object AppDependencies {
 
-  private val bootstrapVersion = "8.2.0"
+  private val bootstrapVersion = "8.5.0"
   private val playVersion = "play-30"
 
-  val compile = Seq(
+  val compile: Seq[ModuleID] = Seq(
     "uk.gov.hmrc"        %% s"bootstrap-backend-$playVersion"  % bootstrapVersion,
     "org.typelevel"      %% "cats-core"                        % "2.7.0"
   )
 
-  val test = Seq(
-    "uk.gov.hmrc"             %%  "bootstrap-test-play-30"      % bootstrapVersion            % Test,
-    "org.mockito"             %   "mockito-inline"              % "3.12.4"                    % Test
+  val test: Seq[ModuleID] = Seq(
+    "uk.gov.hmrc"             %%  s"bootstrap-test-$playVersion"  % bootstrapVersion  % Test,
+    "org.mockito"             %   "mockito-inline"                % "3.12.4"          % Test
   )
 
-  val it = Seq.empty
+  val it: Seq[ModuleID] = Seq.empty
+
+  def apply(): Seq[ModuleID] = compile ++ test ++ it
+
 }
