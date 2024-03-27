@@ -11,7 +11,7 @@ import models.CorrelationId
 import play.api.{Configuration, Environment, Logging}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Results}
-import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisedFunctions}
+import uk.gov.hmrc.auth.core.AuthConnector
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendBaseController
 
 import java.util.UUID

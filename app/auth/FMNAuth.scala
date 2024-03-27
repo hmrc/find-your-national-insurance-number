@@ -9,11 +9,10 @@ import play.api.Logging
 import play.api.mvc.Results.Unauthorized
 import play.api.mvc._
 import uk.gov.hmrc.auth.core.AuthProvider.GovernmentGateway
-import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.{credentialRole, internalId, nino}
+import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.{credentialRole, internalId}
 import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
 import uk.gov.hmrc.auth.core.{AuthProviders, AuthorisationException, AuthorisedFunctions, CredentialRole, User}
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.bootstrap.config.AuthRedirects
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -24,7 +23,7 @@ final case class AuthContext[A](
                                  request:    Request[A]
                                )
 
-trait FMNAuth extends AuthorisedFunctions with AuthRedirects with Logging{
+trait FMNAuth extends AuthorisedFunctions with Logging{
   private type FMNAction[A] = AuthContext[A] => Future[Result]
   private val AuthPredicate = AuthProviders(GovernmentGateway)
   val FMNRetrievals: Retrieval[Option[CredentialRole] ~ Option[String]] = credentialRole and internalId

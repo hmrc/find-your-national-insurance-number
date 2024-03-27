@@ -14,6 +14,7 @@ lazy val scoverageSettings = {
     ScoverageKeys.coverageMinimumStmtTotal := 80,
     ScoverageKeys.coverageFailOnMinimum := true,
     ScoverageKeys.coverageHighlighting := true,
+    scalacOptions += "-Wconf:cat=unused-imports&src=routes/.*:s"
   )
 }
 
@@ -27,8 +28,7 @@ lazy val microservice = Project("find-your-national-insurance-number", file(".")
     RoutesKeys.routesImport ++= Seq(
       "models._"
     ),
-    name := appName,
-    scalaVersion := "2.13.12"
+    name := appName
   )
   .settings(resolvers += Resolver.jcenterRepo)
   .settings(CodeCoverageSettings.settings: _*)
@@ -37,8 +37,10 @@ lazy val microservice = Project("find-your-national-insurance-number", file(".")
 
 lazy val it = project
   .enablePlugins(PlayScala)
-  .dependsOn(microservice % "test->test")
-  .settings(DefaultBuildSettings.itSettings)
-  .settings(libraryDependencies ++= AppDependencies.it)
+  .dependsOn(microservice % "test->test") // the "test->test" allows reusing test code and test dependencies
+  .settings(
+    libraryDependencies ++= AppDependencies.test,
+    DefaultBuildSettings.itSettings()
+  )
 
 addCommandAlias("report", ";clean; coverage; test; it/test; coverageReport")

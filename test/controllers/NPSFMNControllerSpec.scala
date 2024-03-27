@@ -5,7 +5,6 @@
 
 package controllers
 
-import config.AppConfig
 import connectors.NPSFMNConnector
 import models.CorrelationId
 import models.nps.NPSFMNRequest
@@ -46,7 +45,7 @@ class NPSFMNControllerSpec extends AnyWordSpec with Matchers with MockitoSugar w
   private val mockMessagesApi = mock[MessagesApi]
   private val mockControllerComponents = mock[ControllerComponents]
   private val mockAuthConnector = mock[AuthConnector]
-  private val mockNPSFMNService = new NPSFMNServiceImpl(mock[NPSFMNConnector], mock[AppConfig])
+  private val mockNPSFMNService = new NPSFMNServiceImpl(mock[NPSFMNConnector])
 
 
   val retrievalResult: Future[Option[CredentialRole] ~ Option[String]] =
