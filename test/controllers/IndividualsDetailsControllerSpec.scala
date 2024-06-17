@@ -19,7 +19,7 @@ package controllers
 import config.{AppConfig, DesApiServiceConfig}
 import connectors.IndividualDetailsConnector
 import models.CorrelationId
-import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.{any, anyString}
 import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfter
 import org.scalatest.concurrent.ScalaFutures.whenReady
@@ -32,7 +32,7 @@ import play.api.http.Status.OK
 import play.api.inject.bind
 import play.api.inject.guice.{GuiceApplicationBuilder, GuiceableModule}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
 import uk.gov.hmrc.auth.core.{AuthConnector, CredentialRole, User}
@@ -47,6 +47,15 @@ import IndividualsDetailsControllerSpec._
   "getIndividualDetails" must {
 
     "return OK(200)" in {
+
+      when(mockHttpClient.GET[HttpResponse](anyString(), any(), any())(any(), any(), any()))
+        .thenReturn(Future.successful(HttpResponse(OK, "")))
+
+      when(mockAppConfig.individualDetailsServiceUrl).thenReturn("http://localhost:14011/")
+
+      when(mockIndividualDetailsConnector.getIndividualDetails(nino, resolveMerge))
+        .thenReturn(Future.successful(HttpResponse(OK, "")))
+
       val result = controller.getIndividualDetails(nino, resolveMerge)(fakeRequestWithAuth)
 
       whenReady(result) { _ =>
