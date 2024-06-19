@@ -33,6 +33,7 @@ import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
 import uk.gov.hmrc.auth.core.{AuthConnector, CredentialRole, User}
 import uk.gov.hmrc.http.HeaderCarrier
 import util.{WireMockHelper, WiremockStub}
+import play.api.libs.ws.writeableOf_JsValue
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -80,6 +81,7 @@ class NPSFMNControllerIntegrationSpec
 
       val response = await(wsClient.url(url).withHttpHeaders("correlationId" -> "test",
         "gov-uk-originator-id" -> "test").post(Json.toJson(npsBody)))
+      
 
       response.status mustBe 202
     }

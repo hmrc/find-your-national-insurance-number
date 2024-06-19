@@ -57,8 +57,7 @@ class NPSFMNControllerSpec extends AnyWordSpec with Matchers with MockitoSugar w
   private val mockControllerComponents = mock[ControllerComponents]
   private val mockAuthConnector = mock[AuthConnector]
   private val mockNPSFMNService = new NPSFMNServiceImpl(mock[NPSFMNConnector])
-
-
+  
   val retrievalResult: Future[Option[CredentialRole] ~ Option[String]] =
     Future.successful(new ~(Some(User), Some("AA000003B")))
 
@@ -77,8 +76,9 @@ class NPSFMNControllerSpec extends AnyWordSpec with Matchers with MockitoSugar w
     )
 
   val application: Application = new GuiceApplicationBuilder()
-    .configure(conf = "auditing.enabled" -> false, "metrics.enabled" -> false, "metrics.jvm" -> false).
-    overrides(modules: _*).build()
+    .configure(conf = "auditing.enabled" -> false, "metrics.enabled" -> false, "metrics.jvm" -> false)
+    .overrides(modules: _*)
+    .build()
 
   private val controller = application.injector.instanceOf[NPSFMNController]
 

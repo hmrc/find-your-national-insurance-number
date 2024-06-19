@@ -2,7 +2,7 @@ import play.sbt.routes.RoutesKeys
 import uk.gov.hmrc.DefaultBuildSettings
 
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "2.13.12"
+ThisBuild / scalaVersion := "3.3.3"
 
 lazy val appName: String = "find-your-national-insurance-number"
 
@@ -14,7 +14,7 @@ lazy val scoverageSettings = {
     ScoverageKeys.coverageMinimumStmtTotal := 80,
     ScoverageKeys.coverageFailOnMinimum := true,
     ScoverageKeys.coverageHighlighting := true,
-    scalacOptions += "-Wconf:cat=unused-imports&src=routes/.*:s"
+    scalacOptions += "-Wconf:cat=unused&src=.*routes/.*:s"
   )
 }
 
@@ -33,9 +33,9 @@ lazy val microservice = Project("find-your-national-insurance-number", file(".")
     name := appName
   )
   .settings(resolvers += Resolver.jcenterRepo)
-  .settings(CodeCoverageSettings.settings: _*)
+  .settings(CodeCoverageSettings.settings *)
   .settings(PlayKeys.playDefaultPort := 14022)
-  .settings(scoverageSettings: _*)
+  .settings(scoverageSettings *)
 
 lazy val it = project
   .enablePlugins(PlayScala)
