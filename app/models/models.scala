@@ -138,7 +138,8 @@ package object models {
                 }
               }
           }
-        case _ => JsError("cannot remove value")
+
+        case _ => JsError("path and value could not be parsed")
       }
     }
   }

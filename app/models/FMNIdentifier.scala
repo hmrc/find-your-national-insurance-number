@@ -37,11 +37,13 @@ object FMNIdentifier {
 
   implicit val reads: Reads[FMNIdentifier] = JsPath.read[String].map {
     case NinoAndCRNRegex(nino) => NationalInsuranceNumber(nino)
-    case TRNRegex(trn) => TemporaryReferenceNumber(trn)
+    case TRNRegex(trn)         => TemporaryReferenceNumber(trn)
+    case _                     => throw new IllegalArgumentException("Unknown identifier")
   }
 
   implicit val writes: Writes[FMNIdentifier] = JsPath.write[String].contramap[FMNIdentifier] {
     case NationalInsuranceNumber(nino) => nino
     case TemporaryReferenceNumber(trn) => trn
+    case _                             => throw new IllegalArgumentException("Unknown identifier")
   }
 }
