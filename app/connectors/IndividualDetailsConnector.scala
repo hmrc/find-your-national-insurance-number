@@ -20,22 +20,26 @@ import com.google.inject.{Inject, Singleton}
 import config.AppConfig
 import models.CorrelationId
 import play.api.Logging
-import uk.gov.hmrc.http.HttpReads.Implicits._
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse}
-import uk.gov.hmrc.http.StringContextOps
+import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse, StringContextOps}
 
 import scala.concurrent.{ExecutionContext, Future}
+import uk.gov.hmrc.http.client.HttpClientV2
 
 @Singleton
 class IndividualDetailsConnector @Inject()(
-  val httpClient: HttpClient,
-  appConfig:  AppConfig) extends Logging {
+                                            val httpClientV2: HttpClientV2,
+                                            appConfig:  AppConfig) extends Logging {
 
-  def getIndividualDetails(nino: String, resolveMerge: String
+  implicit val httpResponseReads: HttpReads[HttpResponse] = (method: String, url: String, response: HttpResponse) => response
+
+  def getIndividualDetails(nino: String,
+                           resolveMerge: String
                           )(implicit hc: HeaderCarrier, ec: ExecutionContext, correlationId: CorrelationId): Future[HttpResponse] = {
 
     val url = url"${appConfig.individualDetailsServiceUrl}/individuals/details/NINO/${nino.take(8)}?resolveMerge=$resolveMerge"
-    httpClient.GET[HttpResponse](url)(implicitly, desApiHeaders(appConfig.individualDetails), implicitly)
+
+    httpClientV2.get(url)(desApiHeaders(appConfig.individualDetails))
+      .execute(implicitly, ec)
   }
 
 }

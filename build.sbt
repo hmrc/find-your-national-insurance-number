@@ -31,9 +31,9 @@ lazy val microservice = Project("find-your-national-insurance-number", file(".")
     name := appName
   )
   .settings(resolvers += Resolver.jcenterRepo)
-  .settings(CodeCoverageSettings.settings: _*)
+  .settings(CodeCoverageSettings.settings *)
   .settings(PlayKeys.playDefaultPort := 14022)
-  .settings(scoverageSettings: _*)
+  .settings(scoverageSettings *)
 
 lazy val it = project
   .enablePlugins(PlayScala)
