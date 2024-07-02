@@ -24,9 +24,8 @@ import play.api.http.MimeTypes
 import play.api.Logging
 import uk.gov.hmrc.http.HttpReads.Implicits._
 import uk.gov.hmrc.http.client.HttpClientV2
-import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
 
-import java.net.URL
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -43,7 +42,7 @@ class DefaultNPSFMNConnector @Inject()(httpClientV2: HttpClientV2, appConfig: Ap
 
   def sendLetter(nino: String, body: NPSFMNRequest
                    )(implicit hc: HeaderCarrier,correlationId: CorrelationId, ec: ExecutionContext): Future[HttpResponse] = {
-    val url = s"${appConfig.npsFMNAPIUrl}/nps/nps-json-service/nps/itmp/find-my-nino/api/v1/individual/$nino"
+    val url = url"${appConfig.npsFMNAPIUrl}/nps/nps-json-service/nps/itmp/find-my-nino/api/v1/individual/$nino"
 
     val headers = Seq(
       (play.api.http.HeaderNames.CONTENT_TYPE, MimeTypes.JSON),
@@ -53,7 +52,7 @@ class DefaultNPSFMNConnector @Inject()(httpClientV2: HttpClientV2, appConfig: Ap
     )
 
     val httpResponse = httpClientV2
-      .post(new URL(url))
+      .post(url)
       .withBody(body)
       .setHeader(headers:_*)
       .execute[HttpResponse]
