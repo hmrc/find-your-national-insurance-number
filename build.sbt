@@ -22,13 +22,11 @@ lazy val microservice = Project("find-your-national-insurance-number", file(".")
   .enablePlugins(play.sbt.PlayScala, SbtDistributablesPlugin)
   .settings(
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
-    // https://www.scala-lang.org/2021/01/12/configuring-and-suppressing-warnings.html
-    // suppress warnings in generated routes files
     scalacOptions ++= Seq(
-      "-Wconf:src=routes/.*:s",
-      "-Ypatmat-exhaust-depth", "40"),
-    RoutesKeys.routesImport ++= Seq(
-      "models._"
+      "-Wconf:cat=deprecation:ws,cat=feature:ws,cat=optimizer:ws,src=target/.*:s",
+      "-unchecked",
+      "-deprecation",
+      "-feature"
     ),
     name := appName
   )
