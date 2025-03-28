@@ -19,9 +19,9 @@ package controllers
 import auth.FMNAuth
 import connectors.IndividualDetailsConnector
 import models.CorrelationId
-import play.api.{Configuration, Environment, Logging}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Results}
+import play.api.{Configuration, Environment, Logging}
 import uk.gov.hmrc.auth.core.AuthConnector
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendBaseController
 

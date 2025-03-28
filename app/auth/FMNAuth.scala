@@ -17,8 +17,8 @@
 package auth
 
 import play.api.Logging
+import play.api.mvc.*
 import play.api.mvc.Results.Unauthorized
-import play.api.mvc._
 import uk.gov.hmrc.auth.core.AuthProvider.GovernmentGateway
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.{credentialRole, internalId}
 import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}

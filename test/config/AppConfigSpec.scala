@@ -16,10 +16,10 @@
 
 package config
 
+import org.mockito.Mockito.*
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import play.api.Configuration
-import org.mockito.Mockito._
-import org.scalatestplus.mockito.MockitoSugar
 
 class AppConfigSpec extends PlaySpec with MockitoSugar {
 

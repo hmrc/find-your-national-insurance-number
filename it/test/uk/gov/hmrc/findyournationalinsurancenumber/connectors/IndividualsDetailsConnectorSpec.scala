@@ -18,11 +18,12 @@ package uk.gov.hmrc.findyournationalinsurancenumber.connectors
 
 import config.AppConfig
 import connectors.IndividualDetailsConnector
-import models._
+import models.*
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.Application
 import play.api.test.{DefaultAwaitTimeout, Injecting}
-import uk.gov.hmrc.http.{HttpClient, HttpResponse}
+import uk.gov.hmrc.http.HttpResponse
+import uk.gov.hmrc.http.client.HttpClientV2
 import util.{WireMockHelper, WiremockStub}
 
 import java.util.UUID
@@ -93,7 +94,7 @@ class IndividualsDetailsConnectorSpec
     def url(nino: String): String
 
     lazy val connector: IndividualDetailsConnector = {
-      val httpClient = app.injector.instanceOf[HttpClient]
+      val httpClient = app.injector.instanceOf[HttpClientV2]
       val config = app.injector.instanceOf[AppConfig]
       new IndividualDetailsConnector(httpClient, config)
     }
@@ -108,7 +109,7 @@ class IndividualsDetailsConnectorSpec
     "return Ok (200) when called with an invalid nino" in new LocalSetup {
       implicit val correlationId: CorrelationId = CorrelationId(UUID.randomUUID())
       stubGet(url(nino), OK,  Some(""))
-      val result: HttpResponse = connector.getIndividualDetails(nino, resolveMerge).futureValue.leftSideValue
+      val result: HttpResponse = connector.getIndividualDetails(nino, resolveMerge).futureValue
       result.status mustBe OK
       result.body mustBe ""
     }
@@ -116,7 +117,7 @@ class IndividualsDetailsConnectorSpec
     "return NOT_FOUND (404) when called with an invalid nino" in new LocalSetup {
       implicit val correlationId: CorrelationId = CorrelationId(UUID.randomUUID())
       stubGet(url(nino), NOT_FOUND, Some(jsonNotFound))
-      val result: HttpResponse = connector.getIndividualDetails(nino, resolveMerge).futureValue.leftSideValue
+      val result: HttpResponse = connector.getIndividualDetails(nino, resolveMerge).futureValue
       result.status mustBe NOT_FOUND
       result.body mustBe jsonNotFound
     }
@@ -124,7 +125,7 @@ class IndividualsDetailsConnectorSpec
     "return RESOURCE_NOT_FOUND (404) when called with an invalid nino" in new LocalSetup {
       implicit val correlationId: CorrelationId = CorrelationId(UUID.randomUUID())
       stubGet(url(nino), NOT_FOUND, Some(jsonResourceNotFound))
-      val result: HttpResponse = connector.getIndividualDetails(nino, resolveMerge).futureValue.leftSideValue
+      val result: HttpResponse = connector.getIndividualDetails(nino, resolveMerge).futureValue
       result.status mustBe NOT_FOUND
       result.body mustBe jsonResourceNotFound
     }
@@ -132,7 +133,7 @@ class IndividualsDetailsConnectorSpec
     "return INTERNAL_SERVER_ERROR (500) when called with an invalid nino" in new LocalSetup {
       implicit val correlationId: CorrelationId = CorrelationId(UUID.randomUUID())
       stubGet(url(nino), INTERNAL_SERVER_ERROR, Some(jsonInternalServerError))
-      val result: HttpResponse = connector.getIndividualDetails(nino, resolveMerge).futureValue.leftSideValue
+      val result: HttpResponse = connector.getIndividualDetails(nino, resolveMerge).futureValue
       result.status mustBe INTERNAL_SERVER_ERROR
       result.body mustBe jsonInternalServerError
     }
