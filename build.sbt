@@ -19,6 +19,7 @@ lazy val commonScalacOptions = Seq(
   "-unchecked",
   "-deprecation",
   "-feature",
+  "-Werror",
   "-Wconf:msg=unused&src=routes/.*:s",
   "-language:noAutoTupling",
   "-Wvalue-discard",
