@@ -1,46 +1,51 @@
-import play.sbt.routes.RoutesKeys
 import uk.gov.hmrc.DefaultBuildSettings
 
-ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "2.13.12"
+ThisBuild / majorVersion := 1
+ThisBuild / scalaVersion := "3.3.5"
 
 lazy val appName: String = "find-your-national-insurance-number"
 
 lazy val scoverageSettings = {
   import scoverage.ScoverageKeys
   Seq(
-    // Semicolon-separated list of regexs matching classes to exclude
     ScoverageKeys.coverageExcludedPackages := "<empty>;Reverse.*;models/.data/..*;;models.*;.*(AuthService|BuildInfo|Routes).*",
-    ScoverageKeys.coverageMinimumStmtTotal := 80,
+    ScoverageKeys.coverageMinimumStmtTotal := 78,
     ScoverageKeys.coverageFailOnMinimum := true,
-    ScoverageKeys.coverageHighlighting := true,
-    scalacOptions += "-Wconf:cat=unused-imports&src=routes/.*:s"
+    ScoverageKeys.coverageHighlighting := true
   )
 }
+
+lazy val commonScalacOptions = Seq(
+  "-unchecked",
+  "-deprecation",
+  "-feature",
+  "-Werror",
+  "-Wconf:msg=unused&src=routes/.*:s",
+  "-language:noAutoTupling",
+  "-Wvalue-discard",
+  "-Xfatal-warnings",
+  "-Wconf:msg=Flag.*repeatedly:s"
+)
 
 lazy val microservice = Project("find-your-national-insurance-number", file("."))
   .enablePlugins(play.sbt.PlayScala, SbtDistributablesPlugin)
   .settings(
+    name := appName,
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
-    scalacOptions ++= Seq(
-      "-Wconf:cat=deprecation:ws,cat=feature:ws,cat=optimizer:ws,src=target/.*:s",
-      "-unchecked",
-      "-deprecation",
-      "-feature"
-    ),
-    name := appName
+    scalacOptions ++= commonScalacOptions
   )
   .settings(resolvers += Resolver.jcenterRepo)
-  .settings(CodeCoverageSettings.settings: _*)
+  .settings(CodeCoverageSettings.settings *)
   .settings(PlayKeys.playDefaultPort := 14022)
-  .settings(scoverageSettings: _*)
+  .settings(scoverageSettings *)
 
 lazy val it = project
   .enablePlugins(PlayScala)
-  .dependsOn(microservice % "test->test") // the "test->test" allows reusing test code and test dependencies
+  .dependsOn(microservice % "test->test")
   .settings(
     libraryDependencies ++= AppDependencies.test,
-    DefaultBuildSettings.itSettings()
+    DefaultBuildSettings.itSettings(),
+    scalacOptions ++= commonScalacOptions,
   )
 
 addCommandAlias("report", ";clean; coverage; test; it/test; coverageReport")

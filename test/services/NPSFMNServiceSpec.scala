@@ -22,9 +22,8 @@ import models.nps.NPSFMNRequest
 import org.mockito.Mockito.{reset, when}
 import play.api.Application
 import play.api.http.Status.NO_CONTENT
-import services.NPSFMNService
-import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import play.api.inject.bind
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import util.BaseSpec
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -41,7 +40,7 @@ class NPSFMNServiceSpec extends BaseSpec {
 
     .build()
 
-  val npsFMNService = app.injector.instanceOf[NPSFMNService]
+  val npsFMNService: NPSFMNService = app.injector.instanceOf[NPSFMNService]
 
   override def beforeEach(): Unit =
     reset(mockNPSFMNConnector)

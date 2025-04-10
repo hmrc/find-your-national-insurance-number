@@ -24,7 +24,7 @@ case class NPSFMNRequest(firstForename: String, surname: String, dateOfBirth: St
 
 object NPSFMNRequest {
 
-  def empty = NPSFMNRequest(StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY)
+  def empty: NPSFMNRequest = NPSFMNRequest(StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY)
 
   implicit val writes: Writes[NPSFMNRequest] = Json.writes[NPSFMNRequest]
   implicit def jsonBodyWritable[T](implicit writes: Writes[T],

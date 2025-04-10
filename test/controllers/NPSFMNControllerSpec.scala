@@ -32,7 +32,7 @@ import play.api.inject.guice.{GuiceApplicationBuilder, GuiceableModule}
 import play.api.libs.json.Json
 import play.api.mvc.ControllerComponents
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import services.{NPSFMNService, NPSFMNServiceImpl}
 import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
@@ -49,8 +49,8 @@ class NPSFMNControllerSpec extends AnyWordSpec with Matchers with MockitoSugar w
   val nino = "AA000003B"
 
   private val fakeRequestWithAuth = FakeRequest("GET", "/").withHeaders(
-    ("Content-Type" -> "application/json"),
-    ("Authorization" -> "Bearer 123")
+    "Content-Type" -> "application/json",
+    "Authorization" -> "Bearer 123"
   )
 
   private val mockMessagesApi = mock[MessagesApi]

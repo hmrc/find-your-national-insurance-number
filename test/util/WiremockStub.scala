@@ -17,7 +17,7 @@
 package util
 
 import com.github.tomakehurst.wiremock.WireMockServer
-import com.github.tomakehurst.wiremock.client.WireMock._
+import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.http.Fault
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
@@ -105,7 +105,7 @@ trait WiremockStub
       )
     )
 
-  def stubIndividualsDetails(nino: String, resolveMerge: String) = {
+  def stubIndividualsDetails(nino: String, resolveMerge: String): StubMapping = {
     val portion: Int = 8
     val ninoWithoutSuffix = nino.take(portion)
     server.stubFor(get(urlMatching(s"/individuals/details/NINO/$ninoWithoutSuffix\\?resolveMerge=$resolveMerge"))
@@ -204,7 +204,7 @@ trait WiremockStub
     )
   }
 
-  def stubIndividualsDetailsFailure(nino: String, resolveMerge: String) = {
+  def stubIndividualsDetailsFailure(nino: String, resolveMerge: String): StubMapping = {
     val portion: Int = 8
     val ninoWithoutSuffix = nino.take(portion)
     server.stubFor(get(urlMatching(s"/individuals/details/NINO/$ninoWithoutSuffix\\?resolveMerge=$resolveMerge"))
@@ -218,7 +218,7 @@ trait WiremockStub
     )
   }
 
-  def stubNPS(nino: String, response: Int) = {
+  def stubNPS(nino: String, response: Int): StubMapping = {
     server.stubFor(post(urlMatching(s"/nps/nps-json-service/nps/itmp/find-my-nino/api/v1/individual/$nino"))
       .willReturn(
         aResponse()

@@ -17,18 +17,17 @@
 package controllers
 
 import auth.FMNAuth
-
-import javax.inject.{Inject, Singleton}
 import models.CorrelationId
 import models.nps.NPSFMNRequest
-import play.api.{Configuration, Environment, Logging}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.{JsValue, Json, OFormat}
 import play.api.mvc.{Action, MessagesControllerComponents, Results}
+import play.api.{Configuration, Environment, Logging}
 import services.NPSFMNService
 import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisedFunctions}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendBaseController
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton()
