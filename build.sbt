@@ -34,7 +34,6 @@ lazy val microservice = Project("find-your-national-insurance-number", file(".")
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
     scalacOptions ++= commonScalacOptions
   )
-  .settings(resolvers += Resolver.jcenterRepo)
   .settings(CodeCoverageSettings.settings *)
   .settings(PlayKeys.playDefaultPort := 14022)
   .settings(scoverageSettings *)
