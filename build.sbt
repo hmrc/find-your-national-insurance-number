@@ -1,7 +1,7 @@
 import uk.gov.hmrc.DefaultBuildSettings
 
 ThisBuild / majorVersion := 1
-ThisBuild / scalaVersion := "3.3.5"
+ThisBuild / scalaVersion := "3.3.6"
 
 lazy val appName: String = "find-your-national-insurance-number"
 
@@ -34,7 +34,6 @@ lazy val microservice = Project("find-your-national-insurance-number", file(".")
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
     scalacOptions ++= commonScalacOptions
   )
-  .settings(resolvers += Resolver.jcenterRepo)
   .settings(CodeCoverageSettings.settings *)
   .settings(PlayKeys.playDefaultPort := 14022)
   .settings(scoverageSettings *)
