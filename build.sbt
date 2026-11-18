@@ -29,6 +29,7 @@ lazy val commonScalacOptions = Seq(
 
 lazy val microservice = Project("find-your-national-insurance-number", file("."))
   .enablePlugins(play.sbt.PlayScala, SbtDistributablesPlugin)
+  .disablePlugins(JUnitXmlReportPlugin) //Required to prevent https://github.com/scalatest/scalatest/issues/1427
   .settings(
     name := appName,
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
